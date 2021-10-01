@@ -16,7 +16,9 @@ namespace FG {
 		public bool IsMarkerPlacedOnTile { get; private set; }
 		
 		public void OnPointerClick(PointerEventData eventData) {
-			if (IsMarkerPlacedOnTile || eventData.button != PointerEventData.InputButton.Left) {
+			if (IsMarkerPlacedOnTile || 
+			    board.win == true ||
+			    eventData.button != PointerEventData.InputButton.Left) {
 				return;
 			}
 

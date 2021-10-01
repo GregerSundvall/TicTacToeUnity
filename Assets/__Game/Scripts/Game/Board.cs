@@ -1,7 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using Random = UnityEngine.Random;
 
 namespace FG {
     public class Board : MonoBehaviour {
@@ -26,6 +29,9 @@ namespace FG {
 
         public Tile this[int row, int column] => _tiles[row, column];
 
+        public bool win = false;
+        public TextMeshProUGUI winBox;
+        
         public bool PlaceMarkerOnTile(Tile tile) {
             if (ReferenceEquals(CurrentPlayer, null)) {
                 return false;
@@ -42,7 +48,17 @@ namespace FG {
 
                 didPlaceEvent.Invoke();
 
-                SwitchPlayer();
+                win = CheckForWin(tile);
+
+                if (win)
+                {
+                    winBox.enabled = true;
+                }
+                else
+                {
+                    SwitchPlayer();
+                }
+                    
                 return true;
             }
 
@@ -72,9 +88,15 @@ namespace FG {
             tileRenderer.color = targetColor;
         }
 
-        private void SwitchPlayer() {
+        private void SwitchPlayer()
+        {
+            if (win)
+            {
+                Debug.Log("Win");
+            };
             CurrentPlayer = ReferenceEquals(CurrentPlayer, playerOne) ? playerTwo : playerOne;
             switchPlayerEvent.Invoke(CurrentPlayer);
+
         }
 
         private void SetupTiles() {
@@ -98,7 +120,9 @@ namespace FG {
             switchPlayerEvent.Invoke(CurrentPlayer);
         }
 
-        public void Awake() {
+        public void Awake()
+        {
+            winBox.enabled = false;
             _tilesTransform = transform.GetChild(0);
             _piecesTransform = transform.GetChild(1);
             _boardSize = PlaySettings.BoardSize;
@@ -113,5 +137,53 @@ namespace FG {
 
             SetCurrentPlayer();
         }
+
+        private bool CheckForWin(Tile tile)
+        {
+            var x = tile.gridPosition.x;
+            var y = tile.gridPosition.y;
+
+            bool CheckPos(int x, int y)
+            {
+                if (x < 0 || x > (_boardSize - 1) || y < 0 || y > (_boardSize - 1)) return false;
+                if (_pieces[x, y] == null) return false;
+                return _pieces[x, y].Owner == CurrentPlayer;
+            }
+
+            if (CheckPos(x+1, y) && CheckPos(x+2, y) ||
+                CheckPos(x+1, y) && CheckPos(x-1, y) ||
+                CheckPos(x-1, y) && CheckPos(x-2, y))
+            {
+                return true;
+            }
+            if (CheckPos(x, y+1) && CheckPos(x, y+2) ||
+                CheckPos(x, y+1) && CheckPos(x, y-1) ||
+                CheckPos(x, y-1) && CheckPos(x, y-2))
+            {
+                return true;
+            }
+            if (CheckPos(x-1, y+1) && CheckPos(x+1, y-1) ||
+                CheckPos(x-1, y+1) && CheckPos(x-2, y+2) ||
+                CheckPos(x+1, y-1) && CheckPos(x+2, y-2))
+            {
+                return true;
+            }
+            if (CheckPos(x+1, y+1) && CheckPos(x-1, y-1) ||
+                CheckPos(x+1, y+1) && CheckPos(x+2, y+2) ||
+                CheckPos(x-1, y-1) && CheckPos(x-2, y-2))
+            {
+                return true;
+            }
+            
+            Debug.Log($"win = {win}");
+            return false;
+            
+            
+            
+        }
+
+        
+        
+        
     }
 }
