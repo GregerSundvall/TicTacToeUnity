@@ -142,14 +142,91 @@ namespace FG {
         {
             var x = tile.gridPosition.x;
             var y = tile.gridPosition.y;
-
+            int neededToWin;// = _boardSize > 5 ? 5 : _boardSize;
+            neededToWin = _boardSize > 5 ? 5 : _boardSize;
+            var sequence = 0;
+            
+            // Check X
+            for (var i = (1-neededToWin); i < (neededToWin); i++)
+            {
+                if (CheckPos(i, y))
+                {
+                    sequence++;
+                    if (sequence == neededToWin)
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    sequence = 0;
+                }
+            }
+            
+            // Check Y
+            sequence = 0;
+            for (var i = 1-neededToWin; i < neededToWin; i++)
+            {
+                if (CheckPos(x, i))
+                {
+                    sequence++;
+                    if (sequence == neededToWin)
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    sequence = 0;
+                }
+            }
+            
+            // Check /
+            sequence = 0;
+            for (var i = 1-neededToWin; i < neededToWin; i++)
+            {
+                if (CheckPos(i, i))
+                {
+                    sequence++;
+                    if (sequence == neededToWin)
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    sequence = 0;
+                }
+            }
+            
+            // Check \
+            sequence = 0;
+            for (var i = 1-neededToWin; i < neededToWin; i++)
+            {
+                if (CheckPos(-i, i))
+                {
+                    sequence++;
+                    if (sequence == neededToWin)
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    sequence = 0;
+                }
+            }
+            
+            return false;
+            
             bool CheckPos(int x, int y)
             {
                 if (x < 0 || x > (_boardSize - 1) || y < 0 || y > (_boardSize - 1)) return false;
                 if (_pieces[x, y] == null) return false;
                 return _pieces[x, y].Owner == CurrentPlayer;
             }
-
+            
+            /*
             if (CheckPos(x+1, y) && CheckPos(x+2, y) ||
                 CheckPos(x+1, y) && CheckPos(x-1, y) ||
                 CheckPos(x-1, y) && CheckPos(x-2, y))
@@ -174,12 +251,7 @@ namespace FG {
             {
                 return true;
             }
-            
-            Debug.Log($"win = {win}");
-            return false;
-            
-            
-            
+            */
         }
 
         
