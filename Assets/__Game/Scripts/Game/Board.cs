@@ -142,26 +142,15 @@ namespace FG {
         {
             var x = tile.gridPosition.x;
             var y = tile.gridPosition.y;
-            int neededToWin;
-            if (_boardSize > 5)
-            {
-                neededToWin = 5;
-            }
-            else
-            {
-                neededToWin = _boardSize;
-            }
-            Debug.Log($"needed to win = {neededToWin}");
+            var neededToWin = _boardSize > 5 ? 5 : _boardSize;
             var sequence = 0;
             
             // Check X
             for (var i = x-(neededToWin-1); i < x+(neededToWin); i++)
             {
-                Debug.Log($"check X: {i} {y}");
                 if (CheckPos(i, y))
                 {
                     sequence++;
-                    Debug.Log($"seq X: {sequence}");
                     if (sequence == neededToWin)
                     {
                         return true;
@@ -177,11 +166,9 @@ namespace FG {
             sequence = 0;
             for (var i = y-(neededToWin-1); i < y+(neededToWin); i++)
             {
-                Debug.Log($"check Y: {x} {i}");
                 if (CheckPos(x, i))
                 {
                     sequence++;
-                    Debug.Log($"seq Y: {sequence}");
                     if (sequence == neededToWin)
                     {
                         return true;
@@ -197,11 +184,9 @@ namespace FG {
             sequence = 0;
             for (int iX = x-(neededToWin-1), iY = y+(neededToWin-1); iX < x+(neededToWin); iX++, iY--)
             {
-                Debug.Log($"check /: {iX} {iY}");
                 if (CheckPos(iX, iY))
                 {
                     sequence++;
-                    Debug.Log($"seq /: {sequence}");
                     if (sequence == neededToWin)
                     {
                         return true;
@@ -217,11 +202,9 @@ namespace FG {
             sequence = 0;
             for (int iX = x-(neededToWin-1), iY = y-(neededToWin-1); iX < x+(neededToWin); iX++, iY++)
             {
-                Debug.Log($"check inv/: {iX} {iY}");
                 if (CheckPos(iX, iY))
                 {
                     sequence++;
-                    Debug.Log($"seq inv/: {sequence}");
                     if (sequence == neededToWin)
                     {
                         return true;
@@ -241,37 +224,6 @@ namespace FG {
                 if (_pieces[x, y] == null) return false;
                 return _pieces[x, y].Owner == CurrentPlayer;
             }
-            
-            /*
-            if (CheckPos(x+1, y) && CheckPos(x+2, y) ||
-                CheckPos(x+1, y) && CheckPos(x-1, y) ||
-                CheckPos(x-1, y) && CheckPos(x-2, y))
-            {
-                return true;
-            }
-            if (CheckPos(x, y+1) && CheckPos(x, y+2) ||
-                CheckPos(x, y+1) && CheckPos(x, y-1) ||
-                CheckPos(x, y-1) && CheckPos(x, y-2))
-            {
-                return true;
-            }
-            if (CheckPos(x-1, y+1) && CheckPos(x+1, y-1) ||
-                CheckPos(x-1, y+1) && CheckPos(x-2, y+2) ||
-                CheckPos(x+1, y-1) && CheckPos(x+2, y-2))
-            {
-                return true;
-            }
-            if (CheckPos(x+1, y+1) && CheckPos(x-1, y-1) ||
-                CheckPos(x+1, y+1) && CheckPos(x+2, y+2) ||
-                CheckPos(x-1, y-1) && CheckPos(x-2, y-2))
-            {
-                return true;
-            }
-            */
-        }
-
-        
-        
-        
+        } 
     }
 }
