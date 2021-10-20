@@ -155,7 +155,7 @@ namespace FG {
             var sequence = 0;
             
             // Check X
-            for (var i = (1-neededToWin); i < (neededToWin); i++)
+            for (var i = x-(neededToWin-1); i < x+(neededToWin); i++)
             {
                 Debug.Log($"check X: {i} {y}");
                 if (CheckPos(i, y))
@@ -175,7 +175,7 @@ namespace FG {
             
             // Check Y
             sequence = 0;
-            for (var i = 1-neededToWin; i < neededToWin; i++)
+            for (var i = y-(neededToWin-1); i < y+(neededToWin); i++)
             {
                 Debug.Log($"check Y: {x} {i}");
                 if (CheckPos(x, i))
@@ -195,10 +195,10 @@ namespace FG {
             
             // Check /
             sequence = 0;
-            for (var i = 1-neededToWin; i < neededToWin; i++)
+            for (int iX = x-(neededToWin-1), iY = y+(neededToWin-1); iX < x+(neededToWin); iX++, iY--)
             {
-                Debug.Log($"check /: {i} {i}");
-                if (CheckPos(i, i))
+                Debug.Log($"check /: {iX} {iY}");
+                if (CheckPos(iX, iY))
                 {
                     sequence++;
                     Debug.Log($"seq /: {sequence}");
@@ -215,10 +215,10 @@ namespace FG {
             
             // Check \
             sequence = 0;
-            for (var i = 1-neededToWin; i < neededToWin; i++)
+            for (int iX = x-(neededToWin-1), iY = y-(neededToWin-1); iX < x+(neededToWin); iX++, iY++)
             {
-                Debug.Log($"check inv/: {-i} {i}");
-                if (CheckPos(-i, i))
+                Debug.Log($"check inv/: {iX} {iY}");
+                if (CheckPos(iX, iY))
                 {
                     sequence++;
                     Debug.Log($"seq inv/: {sequence}");
