@@ -142,16 +142,26 @@ namespace FG {
         {
             var x = tile.gridPosition.x;
             var y = tile.gridPosition.y;
-            int neededToWin;// = _boardSize > 5 ? 5 : _boardSize;
-            neededToWin = _boardSize > 5 ? 5 : _boardSize;
+            int neededToWin;
+            if (_boardSize > 5)
+            {
+                neededToWin = 5;
+            }
+            else
+            {
+                neededToWin = _boardSize;
+            }
+            Debug.Log($"needed to win = {neededToWin}");
             var sequence = 0;
             
             // Check X
             for (var i = (1-neededToWin); i < (neededToWin); i++)
             {
+                Debug.Log($"check X: {i} {y}");
                 if (CheckPos(i, y))
                 {
                     sequence++;
+                    Debug.Log($"seq X: {sequence}");
                     if (sequence == neededToWin)
                     {
                         return true;
@@ -167,9 +177,11 @@ namespace FG {
             sequence = 0;
             for (var i = 1-neededToWin; i < neededToWin; i++)
             {
+                Debug.Log($"check Y: {x} {i}");
                 if (CheckPos(x, i))
                 {
                     sequence++;
+                    Debug.Log($"seq Y: {sequence}");
                     if (sequence == neededToWin)
                     {
                         return true;
@@ -185,9 +197,11 @@ namespace FG {
             sequence = 0;
             for (var i = 1-neededToWin; i < neededToWin; i++)
             {
+                Debug.Log($"check /: {i} {i}");
                 if (CheckPos(i, i))
                 {
                     sequence++;
+                    Debug.Log($"seq /: {sequence}");
                     if (sequence == neededToWin)
                     {
                         return true;
@@ -203,9 +217,11 @@ namespace FG {
             sequence = 0;
             for (var i = 1-neededToWin; i < neededToWin; i++)
             {
+                Debug.Log($"check inv/: {-i} {i}");
                 if (CheckPos(-i, i))
                 {
                     sequence++;
+                    Debug.Log($"seq inv/: {sequence}");
                     if (sequence == neededToWin)
                     {
                         return true;
